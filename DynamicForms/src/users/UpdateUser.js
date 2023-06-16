@@ -1,44 +1,171 @@
 import React, { Component } from 'react';
 
-export class CreateUser extends Component {
+const regExp = /^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z]+$/;
+
+const formValid = ({ isError, ...rest }) => {
+    let isValid = true;
+
+    Object.values(isError).forEach(val => {
+        if (val.length > 0) {
+            isValid = false;
+        }
+    });
+
+    Object.values(rest).forEach(val => {
+        if (val === null || val === '') {
+            isValid = false;
+        }
+    });
+
+    return isValid;
+};
+
+export class UpdateUser extends Component {
     constructor(props) {
         super(props);
-
         this.state = {
-            UserId: 0,
-            FirstName: "",
-            LastName: "",
-            UserName: "",
-            Email: "",
-            Password: "",
-            PhoneNumber: ""
+
+            id: 0,
+            firstName: '',
+            lastName: '',
+            userName: '',
+            email: '',
+            phoneNumber: '',
+            isError: {
+                firstName: '',
+                lastName: '',
+                userName: '',
+                email: '',
+                phoneNumber: ''
+            }
         }
     }
-    refreshList() {
-        const response = fetch('https://localhost:7168/api/Users/GetAllUsers')
-            .then(response => response.json())
-            .then(data => {
-                this.setState({ Users: data, UsersWithoutFilter: data });
-                alert(data);
-            });
+
+    onSubmit = e => {
+        e.preventDefault();
+        let isError = { ...this.state.isError };
+
+        // Update isError for all fields
+        Object.keys(isError).forEach(fieldName => {
+            const value = this.state[fieldName];
+            switch (fieldName) {
+                case 'firstName':
+                    isError.firstName = value.length < 4 ? 'At least 4 characters required' : '';
+                    break;
+                case 'lastName':
+                    isError.lastName = value.length < 6 ? 'At least 6 characters required' : '';
+                    break;
+                case 'userName':
+                    isError.userName = value.length < 6 ? 'At least 6 characters required' : '';
+                    break;
+                case 'email':
+                    isError.email = regExp.test(value) ? '' : 'Email address is invalid';
+                    break;
+                case 'phoneNumber':
+                    isError.phoneNumber = value.length < 10 ? 'At least 10 characters required' : '';
+                    break;
+                default:
+                    break;
+            }
+        });
+
+        this.setState({ isError }, () => {
+            if (formValid(this.state)) {
+                console.log(this.state);
+                this.updateClick(this.state.id)
+            } else {
+                console.log('Form is invalid!');
+            }
+        });
+    };
+
+
+
+    formValChange = e => {
+        e.preventDefault();
+        const { name, value } = e.target;
+        let isError = { ...this.state.isError };
+
+        switch (name) {
+            case 'firstName':
+                isError.firstName = value.length < 4 ? 'At least 4 characters required' : '';
+                break;
+            case 'lastName':
+                isError.lastName = value.length < 4 ? 'At least 6 characters required' : '';
+                break;
+            case 'userName':
+                isError.userName = value.length < 4 ? 'At least 6 characters required' : '';
+                break;
+            case 'email':
+                isError.email = regExp.test(value) ? '' : 'Email address is invalid';
+                break;
+
+            case 'phoneNumber':
+                isError.phoneNumber =
+                    value.length < 10 ? 'At least 10 characters required' : '';
+                break;
+            default:
+                break;
+        }
+
+        this.setState({
+            isError,
+            [name]: value
+        });
+    };
+
+    refreshList(id) {
+        //const id = this.props.match.params.id;
+        //console.log('The id is : ',id);
+        const response = fetch('https://localhost:7168/api/Users/GetUserById?' + new URLSearchParams({
+            userid: id
+        }),
+
+            {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+            })
+            .then(res => res.json())
+            .then((result) => {
+                alert(JSON.stringify(result));
+                this.setState({
+                    id: result.id,
+                    firstName: result.firstName,
+                    lastName: result.lastName,
+                    userName: result.userName,
+                    email: result.email,
+                    phoneNumber: result.phoneNumber
+                });
+            }, (error) => {
+                alert(error);
+            })
+    }
+    componentDidMount() {
+        this.refreshList(this.state.id);
     }
 
-    createClick() {
-        const response = fetch('https://localhost:7168/api/Authentication/RegisterUser', {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                firstName: this.state.FirstName,
-                lastName: this.state.LastName,
-                userName: this.state.UserName,
-                email: this.state.Email,
-                password: this.state.Password,
-                phoneNumber: this.state.PhoneNumber
+    updateClick(id) {
+        fetch('https://localhost:7168/api/Users/Updateuser/userid?' + new URLSearchParams({
+            userid: id
+        }),
+            {
+                method: 'PUT',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    userId: this.state.id,
+                    firstName: this.state.firstName,
+                    lastName: this.state.lastName,
+                    userName: this.state.userName,
+                    email: this.state.email,
+                    phoneNumber: this.state.phoneNumber
+                })
             })
-        })
             .then(res => res.json())
             .then((result) => {
                 alert(JSON.stringify(result));
@@ -47,69 +174,113 @@ export class CreateUser extends Component {
                 alert(error);
             })
     }
-    //async refreshList() {
-    //    await fetch('https://localhost:7168/api/Group/GetAllGroups')
-    //        .then(response => response.json())
-    //        .then(data => {
-    //            // this.setState({ groups: data });
-    //            this.setState({ groups: data, loading: false });
-    //            alert(data);
-    //        });
-    //}
-    //componentDidMount() {
-    //    this.refreshList();
-    //}
+
 
     render() {
+        const temp = window.location.href.split('/');
+        const userId = temp[temp.length - 1]
+        //console.log('The user id is :', userId);
+        this.state.id = userId;
+        const { isError } = this.state;
+        const {
+            id,
+            firstName,
+            lastName,
+            userName,
+            email,
+            phoneNumber,
+        } = this.state;
         return (
-            <>
-                <section className="border" style={{ SpacerSize: '16', height: '70vh' }}>
-                    <div className="container-fluid">
-                        <form method="post">
-                            <div className="row">
-                                <div className="col-md-4">
-                                    <div className="form-group">
-                                        <label for="LastName">FirstName</label>
-                                        {/*<label for="FirstName" style={{ color: 'blue', marginLeft: '-77%' }}>FirstName</label>*/}
-                                        <input type="text" onChange={(event) => this.setState({ FirstName: event.target.value })} className="form-control" id="txtFirstName" placeholder="Enter Your First Name" />
-                                    </div>
-                                    <div className="form-group">
-                                        <label for="LastName">LastName</label>
-                                        <input type="text" onChange={(event) => this.setState({ LastName: event.target.value })} className="form-control" id="txtLastName" placeholder="Enter Your Last Name" />
-                                    </div>
-                                    <div className="form-group">
-                                        <label for="UserName" >UserName</label>
-                                        <input type="text" onChange={(event) => this.setState({ UserName: event.target.value })} className="form-control" id="txtUserName" placeholder="Enter User Name" />
-                                    </div>
-                                </div>
-                                <div className="col-md-4">
-                                    <div className="form-group">
-                                        <label for="Email" >Email</label>
-                                        <input type="text" onChange={(event) => this.setState({ Email: event.target.value })} className="form-control" id="txtEmail" placeholder="EnterYourEmail" />
-                                    </div>
-                                    <div className="form-group">
-                                        <label for="Password">Password</label>
-                                        <input asp-for="Password" onChange={(event) => this.setState({ Password: event.target.value })} className="form-control" id="txtPassword" placeholder="Enter Password" />
-                                    </div>
-                                    <div className="form-group">
-                                        <label asp-for="PhoneNumber">PhoneNumber</label>
-                                        <input type="text" onChange={(event) => this.setState({ PhoneNumber: event.target.value })} className="form-control" id="txtPhone" placeholder="Enter Phone no" />
-                                    </div>
-                                </div>
+            <form onSubmit={this.onSubmit} noValidate>
+                <div className="row">
+                    <div className="col-md-6">
+                        <div className="form-group">
+                            <span className="input-group-text">First Name</span>
+                            <input
+                                type="text"
+                                value={firstName}
+                                className={
+                                    isError.firstName.length > 0 ? 'is-invalid form-control' : 'form-control'
+                                }
+                                name="firstName"
+                                onChange={this.formValChange}
+                            />
+                            {isError.firstName.length > 0 && (
+                                <span className="invalid-feedback">{isError.firstName}</span>
+                            )}
+                        </div>
+                        <div className="form-group">
+                            <span className="input-group-text">Last Name</span>
+                            <input
+                                type="text"
+                                value={lastName}
+                                className={
+                                    isError.lastName.length > 0 ? 'is-invalid form-control' : 'form-control'
+                                }
+                                name="lastName"
+                                onChange={this.formValChange}
+                            />
+                            {isError.lastName.length > 0 && (
+                                <span className="invalid-feedback">{isError.lastName}</span>
+                            )}
+                        </div>
 
-                            </div>
-                            <div className="row">
-                                <div className="col 4">
-                                    <button type="button"
-                                        className="btn btn-primary float-start"
-                                        onClick={() => this.createClick()}
-                                    >Create</button>
-                                </div>
-                            </div>
-                        </form>
+                        <div className="form-group">
+                            <span className="input-group-text">User Name</span>
+                            <input
+                                type="text"
+                                value={userName}
+                                className={
+                                    isError.userName.length > 0 ? 'is-invalid form-control' : 'form-control'
+                                }
+                                name="userName"
+                                onChange={this.formValChange}
+                            />
+                            {isError.userName.length > 0 && (
+                                <span className="invalid-feedback">{isError.userName}</span>
+                            )}
+                        </div>
                     </div>
-                </section>
-            </>
+                    <div className="col-md-6">
+                        <div className="form-group">
+                            <span className="input-group-text">Email</span>
+                            <input
+                                type="email"
+                                value={email}
+                                className={isError.email.length > 0 ? 'is-invalid form-control' : 'form-control'}
+                                name="email"
+                                onChange={this.formValChange}
+                            />
+                            {isError.email.length > 0 && (
+                                <span className="invalid-feedback">{isError.email}</span>
+                            )}
+                        </div>
+
+                        <div className="form-group">
+                            <span className="input-group-text">Phone Number</span>
+                            <input
+                                type="number"
+                                value={phoneNumber}
+                                className={
+                                    isError.phoneNumber.length > 0 ? 'is-invalid form-control' : 'form-control'
+                                }
+                                name="phoneNumber"
+                                onChange={this.formValChange}
+                            />
+                            {isError.phoneNumber.length > 0 && (
+                                <span className="invalid-feedback">{isError.phoneNumber}</span>
+                            )}
+                        </div>
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col-4">
+                        <button type="submit" className="btn btn-primary float-left">
+                            Update
+                        </button>
+                    </div>
+                </div>
+            </form>
         );
     }
 }

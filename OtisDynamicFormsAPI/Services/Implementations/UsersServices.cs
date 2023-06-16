@@ -118,14 +118,14 @@ namespace OtisDynamicFormsAPI.Services.Implementations
             existingUser.NormalizedEmail = updatedUser.NormalizedEmail;
             existingUser.NormalizedUserName = updatedUser.NormalizedUserName;
             // existingUser.NormalizedUserName = updatedUser.NormalizedUserName;
-            dbContext.Update(updatedUser);
+            dbContext.Update(existingUser);
             //dbContext.Users.Update(updatedUser);
-            dbContext.Entry(updatedUser).Reload();
+            dbContext.Entry(existingUser).Reload();
             dbContext.SaveChanges();
             // Return the updated userupdatedUser
 
             // Return the updated user
-            return updatedUser;
+            return existingUser;
         }
 
         public bool DeleteUser(string userId)
@@ -170,30 +170,46 @@ namespace OtisDynamicFormsAPI.Services.Implementations
         {
             // Retrieve the group entity based on the provided groupId
             var group = dbContext.Groups.FirstOrDefault(g => g.GroupId == groupId);
+            bool flgUserId;
+            //List<UserGroup> userGroups = dbContext.UserGroups.Where(g => g.GroupId == groupId).ToList();
             if (group == null)
             {
                 return new OperationResult(false, $"Group with ID {groupId} does not exist.");
             }
-            // Iterate over the list of userIds and add users to the group
-            foreach (var userId in userIds)
+            else
+            if (userIds?.Any() == true)
             {
-                var user = dbContext.Users.FirstOrDefault(u => u.Id == userId);
-                if (user == null)
+                // var userExistsInGroup = userGroups.Any(mapping => mapping.GroupId == groupId && userIds.Contains(mapping.UserId));
+                foreach (string userId in userIds)
                 {
-                    return new OperationResult(false, $"User with ID {userId} does not exist.");
+                    var getUserGroup = dbContext.UserGroups.FirstOrDefault(ug => ug.GroupId == groupId && ug.UserId == userId);
+                    if (getUserGroup != null)
+                    {
+                        flgUserId = true;
+                        // return new OperationResult(true, "User Already Exists");
+                    }
+                    else
+                    {
+                        var user = dbContext.Users.FirstOrDefault(u => u.Id == userId);
+                        if (user == null)
+                        {
+                            return new OperationResult(false, $"User with ID {userId} does not exist.");
+                        }
+                        // Create a new UserGroup entity to represent the relationship
+                        var userGroup = new UserGroup
+                        {
+                            UserId = userId,
+                            GroupId = groupId
+                        };
+                        // Add the UserGroup entity to the UserGroups table
+                        dbContext.UserGroups.Add(userGroup);
+                        // Save the changes to the database
+                        dbContext.SaveChanges();
+                        return new OperationResult(true, "Users added to the group successfully.");
+                    }
                 }
-                // Create a new UserGroup entity to represent the relationship
-                var userGroup = new UserGroup
-                {
-                    UserId = userId,
-                    GroupId = groupId
-                };
-                // Add the UserGroup entity to the UserGroups table
-                dbContext.UserGroups.Add(userGroup);
             }
-            // Save the changes to the database
-            dbContext.SaveChanges();
-            return new OperationResult(true, "Users added to the group successfully.");
+            return new OperationResult(false, "Please select users");
         }
         public OperationResult DeleteUserFromGroup(int groupId, string userId)
         {

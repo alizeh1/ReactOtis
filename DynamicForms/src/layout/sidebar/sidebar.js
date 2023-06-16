@@ -35,7 +35,7 @@ export class Sidebar extends Component {
                         <NavLink exact to="/users" activeClassName="activeClicked">
                             <CDBSidebarMenuItem icon="user">Users</CDBSidebarMenuItem>
                         </NavLink>
-                        <NavLink exact to="/fetch-data" activeClassName="activeClicked">
+                        <NavLink exact to="/forms" activeClassName="activeClicked">
                             <CDBSidebarMenuItem icon="chart-line">Forms</CDBSidebarMenuItem>
                         </NavLink>                      
                     </CDBSidebarMenu>

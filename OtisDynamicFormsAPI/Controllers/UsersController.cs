@@ -26,7 +26,7 @@ namespace OtisDynamicFormsAPI.Controllers
             dbContext = _dbContext;
         }
 
-        [HttpGet("{userid}")]
+        [HttpGet]
         public async Task<IActionResult> GetUserById(string userid)
         {
             var user = await _userServices.GetUserById(userid);

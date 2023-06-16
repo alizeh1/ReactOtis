@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-export class Users extends Component {
+export class Forms extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -23,7 +23,7 @@ export class Users extends Component {
             });
     }
     componentDidMount() {
-        this.refreshList();
+        //this.refreshList();
     }
     editClick(dep) {
         this.setState({
@@ -113,7 +113,7 @@ export class Users extends Component {
         } = this.state;
         return (
             <div>
-                <Link exact to="/CreateUser">
+                <Link exact to="/CreateForms">
                     <button type="button"
                         className="btn btn-primary m-2 float-end">
                         Create User
@@ -122,19 +122,19 @@ export class Users extends Component {
                     <thead>
                         <tr>
                             <th>
-                                Name
+                                Form Name
                             </th>
                             <th>
-                                User Name
+                                Created By
                             </th>
                             <th>
-                                Email
+                                Responses
                             </th>
                             <th>
-                                PhoneNumber
+                                Date Created
                             </th>
                             <th>
-                                Action
+                                Actions
                             </th>
                         </tr>
                     </thead>

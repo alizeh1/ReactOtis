@@ -65,11 +65,19 @@
     border-top: 1px solid rgba(0,0,0,0.15)
 }
 
-.PageContent {
+/*.PageContent {
     padding-left: 12px;
     justify-content: center;
-    background-color: #FFFFFF;
-}
+    background-color: #FFFFFF;*/
+/*    position:;*/
+/*}*/
+/*.vertical-center {
+    margin: 2%;
+    position: absolute;
+    top: 50%;
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+}*/
 
 .SideMenu {
     height: 100%;
@@ -90,15 +98,28 @@ when x-ms-webview click aside menu
     color: white !important;
 }
 
-
-
 .SideMenuNdPageContent {
+    display: flex;
+    flex-grow: 1;
+}
+.PageContent {
+    flex-grow: 1;
+    /* padding-left: 12px;
+    background-color: #FFFFFF;*/
+}
+
+
+
+
+
+/*.SideMenuNdPageContent {
     display: flex;
     flex: 1;
     justify-content: flex-start;
     align-items: flex-start;
     background-color: #FFFFFF;
-}
+}*/
+
 
 /*.App {
     display: flex;

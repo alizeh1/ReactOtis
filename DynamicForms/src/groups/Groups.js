@@ -18,7 +18,9 @@ class Groups extends Component {
 
             groupNameFilter: "",
             groupDescriptionFilter: "",
-            groupsWithoutFilter: []
+            groupsWithoutFilter: [],
+            groupNameError: '',
+            groupDescriptionError: ''
         };
     }
 
@@ -71,12 +73,31 @@ class Groups extends Component {
         this.refreshList();
     }
 
-    changegroupName = (e) => {
-        this.setState({ groupName: e.target.value });
-    }
-    changegroupdescription = (e) => {
-        this.setState({ groupDescription: e.target.value });
-    }
+    changegroupName = (event) => {
+        this.setState({ groupName: event.target.value });
+    };
+    validateGroupName = () => {
+        const { groupName } = this.state;
+        if (groupName.trim() === '') {
+            this.setState({ groupNameError: 'Group Name is required' });
+        } else {
+            this.setState({ groupNameError: '' });
+        }
+    };
+    validateGroupDescription = () => {
+        const { groupDescription } = this.state;
+        if (groupDescription.trim() === '') {
+            this.setState({ groupDescriptionError: 'Group Description is required' });
+        } else {
+            this.setState({ groupDescriptionError: '' });
+        }
+    };
+    //changegroupName = (e) => {
+    //    this.setState({ groupName: e.target.value });
+    //}
+    changegroupdescription = (event) => {
+        this.setState({ groupDescription: event.target.value });
+    };
 
     addClick() {
         this.setState({
@@ -106,32 +127,44 @@ class Groups extends Component {
     }
 
     createClick() {
-        fetch('https://localhost:7168/api/Group/CreateGroup', {
-
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-
-                groupId: this.state.groupId,
-                groupName: this.state.groupName,
-                groupDescription: this.state.groupDescription,
-                CreatedBy: this.state.CreatedBy,
-                CreatedOn: this.state.CreatedOn,
-                ModifiedBy: this.state.ModifiedBy,
-                ModifiedOn: this.state.ModifiedOn,
-                IsActive: this.state.IsActive
+        if (this.state.groupName === "" && this.state.groupDescription === "") {
+            alert("Please enter group name and group description");
+            return false;
+        } else if (this.state.groupName === "") {
+            alert("Please enter group name");
+            return false;
+        } else if (this.state.groupDescription === "") {
+            alert("Please enter group description");
+            return false;
+            //if (this.state.groupName === "" && this.state.groupDescription === "") {
+            //    alert("please enter group name and group des")
+            //    return false;
+        } else {
+            fetch('https://localhost:7168/api/Group/CreateGroup', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    groupId: this.state.groupId,
+                    groupName: this.state.groupName,
+                    groupDescription: this.state.groupDescription,
+                    CreatedBy: this.state.CreatedBy,
+                    CreatedOn: this.state.CreatedOn,
+                    ModifiedBy: this.state.ModifiedBy,
+                    ModifiedOn: this.state.ModifiedOn,
+                    IsActive: this.state.IsActive
+                })
             })
-        })
-            .then(res => res.json())
-            .then((result) => {
-                alert(JSON.stringify(result));
-                this.refreshList();
-            }, (error) => {
-                alert('Failed');
-            })
+                .then(res => res.json())
+                .then((result) => {
+                    alert(JSON.stringify(result));
+                    this.refreshList();
+                }, (error) => {
+                    alert('Failed');
+                })
+        }
     }
 
     updateClick(groupId) {
@@ -206,6 +239,8 @@ class Groups extends Component {
             groupId,
             groupName,
             groupDescription,
+            groupNameError,
+            groupDescriptionError,
 
         } = this.state;
 
@@ -323,7 +358,7 @@ class Groups extends Component {
                     </table>
 
                     <div className="modal fade" id="exampleModalw" tabIndex="-1" aria-hidden="true">
-                        <div className="modal-dialog modal-lg modal-dialog-centered">
+                        <div className="modal-dialog modal-sm modal-dialog-centered">
                             <div className="modal-content">
                                 <div className="modal-header">
                                     <h5 className="modal-title">{modalTitle}</h5>
@@ -331,23 +366,18 @@ class Groups extends Component {
                                     ></button>
                                 </div>
 
+                            <div className="modal-body">
+                                <div className="modal-heading" style={{ textAlign: 'left', fontWeight: 'bold' }}>Group Name</div>
+                                <div className="input-group mb-3">
+                                    <input type="text" className="form-control" value={groupName} onChange={this.changegroupName} onBlur={this.validateGroupName} />
+                                    {groupNameError && <div className="error-message" style={{ color: 'red' }}>{groupNameError}</div>}
+                                </div>
                                 <div className="modal-body">
+                                    <div className="modal-heading" style={{ textAlign: 'left', fontWeight: 'bold' }}>Group Description</div>
                                     <div className="input-group mb-3">
-                                        <span className="input-group-text">Group Name</span>
-                                        <input type="text" className="form-control"
-                                            value={groupName}
-                                            onChange={this.changegroupName} />
+                                        <textarea className="form-control resize-none" style={{ height: '160px' }} value={groupDescription} onChange={this.changegroupdescription} onBlur={this.validateGroupDescription} />
+                                        {groupDescriptionError && <div className="error-message" style={{ color: 'red' }}>{groupDescriptionError}</div>}
                                     </div>
-
-                                    <div className="modal-body">
-                                        <div className="input-group mb-3">
-                                            <span className="input-group-text">Group Description</span>
-                                            <input type="text" className="form-control"
-                                                value={groupDescription}
-                                                onChange={this.changegroupdescription} />
-                                        </div>
-
-
                                         {groupId === 0 ?
                                             <button type="button"
                                                 className="btn btn-primary float-start"

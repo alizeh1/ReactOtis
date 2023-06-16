@@ -17,6 +17,7 @@
     <Folder Include="src\layout\routes\" />
     <Folder Include="src\layout\pagecontent\" />
     <Folder Include="src\layout\sidemenu\" />
+    <Folder Include="src\forms\" />
     <Folder Include="src\users\" />
   </ItemGroup>
   <!-- This target is copied from the ASP.NET SPA template in order to ensure node_modules are in place. -->

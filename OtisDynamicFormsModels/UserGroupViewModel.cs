@@ -9,7 +9,9 @@ namespace OtisDynamicFormsModels
 {
     public class UserGroupViewModel
     {
-        
+        public string userId { get; set; }
+        public int GroupId { get; set; }
+
         [Required(ErrorMessage = "Name is required.")]
         public string Name { get; set; }
         [Required(ErrorMessage = "Email is required.")]

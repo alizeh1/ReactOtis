@@ -3,6 +3,8 @@ import { Container } from 'reactstrap';
 import { NavMenu } from './navmenu/NavMenu';
 import PageContent from './pagecontent/PageContent';
 import { Sidebar } from './sidebar/sidebar';
+import App from '../App.css'
+//import { Login } from './login/Login'
 //import SideMenu from './sidemenu/SideMenu';
 //import { NavMenu } from './layout/navmenu/NavMenu';
 //import SideMenu from './layout/sidemenu/SideMenu';

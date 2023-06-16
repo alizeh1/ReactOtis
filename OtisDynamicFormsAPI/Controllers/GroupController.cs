@@ -78,13 +78,14 @@ namespace OtisDynamicFormsAPI.Controllers
             }
             var userGroupViewModels = users.Select(u => new UserGroupViewModel
             {
+                userId = u.Id,
                 Name = u.FirstName + " " + u.LastName,
                 Email = u.Email,
                 PhoneNumber = u.PhoneNumber,
             }).ToList();
             return Ok(userGroupViewModels);
         }
-        [HttpPost("{groupId}/users")]
+        [HttpPost("{groupId}")]
         public IActionResult AddUsersToGroup(int groupId, [FromBody] List<string> userIds)
         {
             var result = _usersServices.AddUsersToGroup(groupId, userIds);
@@ -92,7 +93,7 @@ namespace OtisDynamicFormsAPI.Controllers
             {
                 return BadRequest(result.Message);
             }
-            return Ok();
+            return Ok(result);
         }
         [HttpDelete("groupId/userId")]
         //[HttpDelete("{groupId}/users/{userId}")]
@@ -103,7 +104,7 @@ namespace OtisDynamicFormsAPI.Controllers
             {
                 return BadRequest(result.Message);
             }
-            return Ok();
+            return Ok(result);
         }
     }
 }
