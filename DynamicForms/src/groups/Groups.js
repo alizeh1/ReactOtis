@@ -10,11 +10,11 @@ class Groups extends Component {
             groupId: 0,
             groupName: "",
             groupDescription: "",
-            CreatedBy: "good",
-            CreatedOn: "2019-01-06T17:16:40",
-            ModifiedBy: "hhhh",
-            ModifiedOn: "2019-01-06T17:16:40",
-            IsActive: true,
+            createdBy: "good",
+            createdOn: "2019-01-06T17:16:40",
+            modifiedBy: "hhhh",
+            modifiedOn: "2019-01-06T17:16:40",
+            isActive: true,
 
             groupNameFilter: "",
             groupDescriptionFilter: "",
@@ -22,6 +22,14 @@ class Groups extends Component {
             groupNameError: '',
             groupDescriptionError: ''
         };
+        this.handleCloseModal = this.handleCloseModal.bind(this);
+    }
+
+    handleCloseModal() {
+        this.setState({ showModal: false }, () => {
+            this.refreshList();
+            // Implement any other logic to be executed after closing the modal
+        });
     }
 
     FilterFn() {
@@ -101,15 +109,15 @@ class Groups extends Component {
 
     addClick() {
         this.setState({
-            modalTitle: "Add Group",
+            modalTitle: "Create Group",
             groupId: 0,
             groupName: "",
             groupDescription: "",
-            CreatedBy: "good",
-            CreatedOn: "2019-01-06T17:16:40",
-            ModifiedBy: "hhhh",
-            ModifiedOn: "2019-01-06T17:16:40",
-            IsActive: true
+            createdBy: "good",
+            createdOn: "2019-01-06T17:16:40",
+            modifiedBy: "hhhh",
+            modifiedOn: "2019-01-06T17:16:40",
+            isActive: true
         });
     }
     editClick(gro) {
@@ -118,11 +126,11 @@ class Groups extends Component {
             groupId: gro.groupId,
             groupName: gro.groupName,
             groupDescription: gro.groupDescription,
-            CreatedBy: gro.CreatedBy,
-            CreatedOn: gro.CreatedOn,
-            ModifiedBy: gro.ModifiedBy,
-            ModifiedOn: gro.ModifiedOn,
-            IsActive: gro.IsActive
+            createdBy: gro.createdBy,
+            createdOn: gro.createdOn,
+            modifiedBy: gro.modifiedBy,
+            modifiedOn: gro.modifiedOn,
+            isActive: gro.isActive
         });
     }
 
@@ -150,11 +158,11 @@ class Groups extends Component {
                     groupId: this.state.groupId,
                     groupName: this.state.groupName,
                     groupDescription: this.state.groupDescription,
-                    CreatedBy: this.state.CreatedBy,
-                    CreatedOn: this.state.CreatedOn,
-                    ModifiedBy: this.state.ModifiedBy,
-                    ModifiedOn: this.state.ModifiedOn,
-                    IsActive: this.state.IsActive
+                    createdBy: this.state.createdBy,
+                    createdOn: this.state.createdOn,
+                    modifiedBy: this.state.modifiedBy,
+                    modifiedOn: this.state.modifiedOn,
+                    isActive: this.state.isActive
                 })
             })
                 .then(res => res.json())
@@ -181,11 +189,11 @@ class Groups extends Component {
                     groupId: this.state.groupId,
                     groupName: this.state.groupName,
                     groupDescription: this.state.groupDescription,
-                    CreatedBy: "stri",
-                    CreatedOn: "2019-01-06T17:16:40",
-                    ModifiedBy: "strs",
-                    ModifiedOn: "2019-01-06T17:16:40",
-                    IsActive: true
+                    createdBy: "stri",
+                    createdOn: "2019-01-06T17:16:40",
+                    modifiedBy: "strs",
+                    modifiedOn: "2019-01-06T17:16:40",
+                    isActive: true
 
                 })
             })
@@ -244,6 +252,11 @@ class Groups extends Component {
 
         } = this.state;
 
+        const handleClose = () => {
+            this.setState({ showModal: false });
+            window.location.reload();
+        };
+
         return (
             <div>
                     <button type="button"
@@ -251,7 +264,7 @@ class Groups extends Component {
                         data-bs-toggle="modal"
                         data-bs-target="#exampleModalw"
                         onClick={() => this.addClick()}>
-                        Add Group
+                        Create Group
                     </button>
 
                     <table className="table table-striped">
@@ -302,7 +315,6 @@ class Groups extends Component {
                                         </button>
                                     </div>
                                     Description
-
                                 </th>
                                 <th>
                                     Add User
@@ -357,48 +369,49 @@ class Groups extends Component {
                         </tbody>
                     </table>
 
-                    <div className="modal fade" id="exampleModalw" tabIndex="-1" aria-hidden="true">
-                        <div className="modal-dialog modal-sm modal-dialog-centered">
-                            <div className="modal-content">
-                                <div className="modal-header">
-                                    <h5 className="modal-title">{modalTitle}</h5>
-                                    <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"
-                                    ></button>
-                                </div>
+
+                <div className="modal fade" id="exampleModalw" tabIndex="-1" aria-hidden="true">
+                    <div className="modal-dialog modal-sm modal-dialog-centered">
+                        <div className="modal-content">
+                            <div className="modal-header">
+                                <h5 className="modal-title">{modalTitle}</h5>
+                                <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                                ></button>
+                            </div>
 
                             <div className="modal-body">
                                 <div className="modal-heading" style={{ textAlign: 'left', fontWeight: 'bold' }}>Group Name</div>
                                 <div className="input-group mb-3">
                                     <input type="text" className="form-control" value={groupName} onChange={this.changegroupName} onBlur={this.validateGroupName} />
-                                    {groupNameError && <div className="error-message" style={{ color: 'red' }}>{groupNameError}</div>}
                                 </div>
-                                <div className="modal-body">
-                                    <div className="modal-heading" style={{ textAlign: 'left', fontWeight: 'bold' }}>Group Description</div>
-                                    <div className="input-group mb-3">
-                                        <textarea className="form-control resize-none" style={{ height: '160px' }} value={groupDescription} onChange={this.changegroupdescription} onBlur={this.validateGroupDescription} />
-                                        {groupDescriptionError && <div className="error-message" style={{ color: 'red' }}>{groupDescriptionError}</div>}
-                                    </div>
-                                        {groupId === 0 ?
-                                            <button type="button"
-                                                className="btn btn-primary float-start"
-                                                onClick={() => this.createClick()}
-                                            >Create</button>
-                                            : null}
+                                {groupNameError && <div className="error-message" style={{ color: 'red', marginTop: '10px' }}>{groupNameError}</div>}
 
-                                        {groupId !== 0 ?
-                                            <button type="button"
-                                                className="btn btn-primary float-start"
-                                                onClick={() => this.updateClick(groupId)}
-                                            >Update</button>
-                                            : null}
-                                    </div>
+                                <div className="modal-heading" style={{ textAlign: 'left', fontWeight: 'bold' }}>Group Description</div>
+                                <div className="input-group mb-3">
+                                    <textarea className="form-control resize-none" style={{ height: '160px' }} value={groupDescription} onChange={this.changegroupdescription} onBlur={this.validateGroupDescription} />
+                                </div>
+                                {groupDescriptionError && <div className="error-message" style={{ color: 'red', marginTop: '10px' }}>{groupDescriptionError}</div>}
+
+                                {groupId === 0 ?
+                                    <button type="button"
+                                        className="btn btn-primary float-start"
+                                        onClick={() => this.createClick()}
+                                    >Create</button>
+                                    : null}
+
+                                {groupId !== 0 ?
+                                    <button type="button"
+                                        className="btn btn-primary float-start"
+                                        onClick={() => this.updateClick(groupId)}
+                                    >Update</button>
+                                    : null}
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
+            </div>
 
-            )
+        )
     }
 }
 export default Groups;

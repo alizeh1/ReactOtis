@@ -22,6 +22,11 @@ export class NavMenu extends Component {
         });
     }
 
+    logOut() {
+        sessionStorage.removeItem('token');
+        window.location.href = 'https://localhost:3000'
+    }
+
     render() {
         return (
             <header>
@@ -46,6 +51,9 @@ export class NavMenu extends Component {
                                 </NavItem>
                                 <NavItem>
                                     <NavLink tag={Link} className="text-dark" to="/fetch-data">Fetch data</NavLink>
+                                </NavItem>
+                                <NavItem>
+                                    <button className="btn btn-light" onClick={this.logOut}>Logout</button>
                                 </NavItem>
                             </ul>
                         </Collapse>

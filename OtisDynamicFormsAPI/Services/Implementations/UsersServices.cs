@@ -25,7 +25,6 @@ namespace OtisDynamicFormsAPI.Services.Implementations
         }
 
 
-
         public async Task<ApplicationUser> GetUserById(string userId)
         {
             var user = await dbContext.Users.FindAsync(userId);
@@ -120,7 +119,7 @@ namespace OtisDynamicFormsAPI.Services.Implementations
             // existingUser.NormalizedUserName = updatedUser.NormalizedUserName;
             dbContext.Update(existingUser);
             //dbContext.Users.Update(updatedUser);
-            dbContext.Entry(existingUser).Reload();
+            //dbContext.Entry(existingUser).Reload();
             dbContext.SaveChanges();
             // Return the updated userupdatedUser
 

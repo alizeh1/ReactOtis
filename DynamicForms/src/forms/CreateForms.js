@@ -49,7 +49,7 @@ function CreateForms() {
         setQuestions(newQuestion);
         console.log(newQuestion);
     }
-    function changeOptionValue(text, i, j) {
+    function changeOptionValue(text, i, lj) {
         var optionQuestion = [...questions];
         optionQuestion[i].options[j].optionText = text;
         setQuestions(optionQuestion);
@@ -99,27 +99,27 @@ function CreateForms() {
         setQuestions(reqQuestion);
     }
     function addMoreQuestionField() {
-        //expandcloseAll();
+        expandcloseAll();
         setQuestions([...questions, { questionText: "Question", questionType: "radio", options: [{ optionText: "Option 1" }], open: true, required: false }]);
     }
-    //function expandcloseAll() {
-    //    let qs = [...questions];
-    //    for (let j = 0; j < qs.length; j++) {
-    //        qs[j].open = false;
-    //    }
-    //    setQuestions(qs);
-    //}
-    //function handleExpand(i) {
-    //    let qs = [...questions];
-    //    for (let j = 0; j < qs.length; j++) {
-    //        if (i === j) {
-    //            qs[i].open = true;
-    //        } else {
-    //            qs[j].open = false;
-    //        }
-    //    }
-    //    setQuestions(qs);
-    //}
+    function expandcloseAll() {
+        let qs = [...questions];
+        for (let j = 0; j < qs.length; j++) {
+            qs[j].open = false;
+        }
+        setQuestions(qs);
+    }
+    function handleExpand(i) {
+        let qs = [...questions];
+        for (let j = 0; j < qs.length; j++) {
+            if (i === j) {
+                qs[i].open = true;
+            } else {
+                qs[j].open = false;
+            }
+        }
+        setQuestions(qs);
+    }
     function onDragEnd(result) {
         if (!result.destination) {
             return;
@@ -165,7 +165,7 @@ function CreateForms() {
                                             fontSize="small" />
                                     </div>
                                     <div>
-                                        <Accordion expanded={questions[i].open} /* onChange={() => { handleExpand(i) }}*/ className={questions[i].open ? 'add border' : ""}>
+                                        <Accordion expanded={questions[i].open} onChange={() => { handleExpand(i) }} ssName={questions[i].open ? 'add border' : ""}>
                                             <AccordionSummary aria-controls="panel1bh-content" id="panel1bh-header" elevation={1} style={{ width: "100%" }} >
                                                 {!questions[i].open ? (
                                                     <div className="saved_questions">
@@ -184,7 +184,8 @@ function CreateForms() {
                                                                                 lineHeight: ' 20px',
                                                                                 color: '#202124'
                                                                             }}>
-                                                                                (ques.options[j].optionText]
+                                                                                <input type="text" className="text_input" placeholder="option" value={ques.options[j].optionText} onChange={(e) => { changeOptionValue(e.target.value, i, j) }} disabled></input>
+
                                                                             </Typography>
                                                                         } />
                                                                 </div>
@@ -213,7 +214,7 @@ function CreateForms() {
                                                                         <ShortTextIcon style={{ marginRight: "10px" }} />
                                                                 }
                                                                 <div>
-                                                                    <input type="text" className="text_input" placeholder="option" value={ques.options[j].optionText} onChange={(e) => { changeOptionValue(e.target.value, i, j) }}></input>
+                                                                    <input type="text" className="text_input" placeholder="option" value={ques.options[j].optionText} onChange={(e) => { changeOptionValue(e.target.value, i, j) }} disabled></input>
                                                                 </div>
                                                                 <CropOriginalIcon style={{ color: "#5f6368" }} />
                                                                 <IconButton aria-label="delete">

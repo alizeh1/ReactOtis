@@ -199,6 +199,7 @@ namespace OtisDynamicFormsAPI.Services.Implementations
         public async Task<Token> Login(LoginModel loginModel)
         {
             // Check user existence
+            //var user = loginModel.UserName;
             var user = await _userManager.FindByNameAsync(loginModel.UserName);
 
             if (user != null && await _userManager.CheckPasswordAsync(user, loginModel.Password))

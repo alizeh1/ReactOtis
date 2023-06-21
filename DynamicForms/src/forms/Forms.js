@@ -4,14 +4,15 @@ export class Forms extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            Users: [],
-            id: 0,
-            firstName: "",
-            lastName: "",
-            userName: "",
-            email: "",
-            phoneNumber: "",
-            data: ""
+            Forms: [],
+            formId: 0,
+            formDescription:"",
+            formName: "",
+            createdBy: "",
+            createdOn: "",
+            isPending: "",
+            isSubmitted: "",
+            isActive:""
         }
     }
     /*Get all Users in List*/
@@ -100,23 +101,26 @@ export class Forms extends Component {
     }
     render() {
         const {
-            Users,
+            Forms,
             modalTitle,
-            id,
-            firstName,
-            lastName,
-            userName,
-            email,
-            passwordHash,
-            phoneNumber,
-            data
+            formId,
+            formName,
+            createdBy,
+            createdOn,
+            isPending,
+            isSubmitted,                        
         } = this.state;
         return (
             <div>
+                <Link exact to="/Form">
+                    <button type="button"
+                        className="btn btn-primary m-2 float-end">
+                        Add Form
+                    </button></Link>
                 <Link exact to="/CreateForms">
                     <button type="button"
                         className="btn btn-primary m-2 float-end">
-                        Create User
+                        CreateForm
                     </button></Link>
                 <table className="table table-striped">
                     <thead>
@@ -128,10 +132,16 @@ export class Forms extends Component {
                                 Created By
                             </th>
                             <th>
-                                Responses
+                                Date Created
                             </th>
                             <th>
-                                Date Created
+                                Status
+                            </th>
+                            <th>
+                                Publish
+                            </th>
+                            <th>
+                                Assign to Group
                             </th>
                             <th>
                                 Actions
@@ -139,23 +149,25 @@ export class Forms extends Component {
                         </tr>
                     </thead>
                     <tbody>
-                        {Users.map(dep =>
-                            <tr key={dep.id}>
-                                <td>{dep.firstName}&nbsp;{dep.lastName}</td>
-                                <td>{dep.userName}</td>
-                                <td>{dep.email}</td>
-                                <td>{dep.phoneNumber}</td>
+                        {Forms.map(form =>
+                            <tr key={form.formId}>
+                                <td>{form.formName}</td>
+                                <td>{form.createdBy}</td>
+                                <td>{form.createdOn}</td>
+                                <td>{form.isSubmitted}</td>
+                                <td>{form.isActive}</td>
+                                <td>{form.AddGroup}
+                                    <Link exact to={`/addgroup/${gro.groupId}`}>
+                                        <button type="button"
+                                            //onClick={() => this.adduserClick(gro.groupId)}
+                                            className="btn btn-light mr-1" > Add Group <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="AddGroup" viewBox="0 0 16 16">
+                                                <path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm.5-5v1h1a.5.5 0 0 1 0 1h-1v1a.5.5 0 0 1-1 0v-1h-1a.5.5 0 0 1 0-1h1v-1a.5.5 0 0 1 1 0Zm-2-6a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM8 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z" />
+                                                <path d="M8.256 14a4.474 4.474 0 0 1-.229-1.004H3c.001-.246.154-.986.832-1.664C4.484 10.68 5.711 10 8 10c.26 0 .507.009.74.025.226-.341.496-.65.804-.918C9.077 9.038 8.564 9 8 9c-5 0-6 3-6 4s1 1 1 1h5.256Z" />
+                                            </svg>
+                                        </button>
+                                    </Link>
+                                </td>
                                 <td>
-                                    {/*<button type="button" name="editButton"*/}
-                                    {/*    className="btn btn-light mr-1"*/}
-                                    {/*    data-bs-toggle="modal"*/}
-                                    {/*    data-bs-target="#exampleModalw"*/}
-                                    {/*    onClick={() => this.editClick(dep)}>*/}
-                                    {/*    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-pencil-square" viewBox="0 0 16 16">*/}
-                                    {/*        <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />*/}
-                                    {/*        <path fillRule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z" />*/}
-                                    {/*    </svg>*/}
-                                    {/*</button>*/}
                                     <Link exact to={`/UpdateUser/${dep.id}`}>
                                         <button type="button" name="editButton"
                                             className="btn btn-light mr-1"

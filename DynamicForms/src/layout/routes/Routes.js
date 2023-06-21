@@ -13,9 +13,10 @@ import { CreateUser } from '../../users/CreateUser'
 import { AddUser } from '../../groups/AddUser'
 import { UpdateUser } from '../../users/UpdateUser'
 import { Login } from '../../login/Login'
-import  CreateForms   from '../../forms/CreateForms'
+import CreateForms from '../../forms/CreateForms'
 import { Forms } from '../../forms/Forms'
 import { MiddleWare } from '../../Middleware'
+import  Form  from '../../forms/Form'
 
 function AppRoutes() {
     return (
@@ -30,9 +31,9 @@ function AppRoutes() {
                     <Route path='/createuser' element={<CreateUser />} />
             <Route path='/login' element={<Login />} />
             <Route path='/createforms' element={<CreateForms />} />
+            <Route path='/form' element={<Form />} />
             <Route path='/forms' element={<Forms />} />
-
-             <Route path='/adduser/:id' element={<AddUser />} />
+            <Route path='/adduser/:id' element={<AddUser />} />
             <Route path='/updateUser/:id' element={<UpdateUser />} />
             <Route path='/MiddleWare/: data' element={<MiddleWare />} />
             </Routes>

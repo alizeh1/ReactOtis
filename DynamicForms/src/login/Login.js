@@ -9,6 +9,7 @@ export class Login extends Component {
             UserName: "",
             Password: "",
             Role: "",
+            token:"",
             isUserAuthenticated: false
         }
     }
@@ -28,11 +29,18 @@ export class Login extends Component {
             .then(res => res.json())
             .then((result) => {
                 alert(JSON.stringify(result));
+                var tokens = result.tokens;
                 if (result === 'Invalid Credentials!') {
                     alert('Bad Request');
                 }
                 else {
-                    window.location.href = `/MiddleWare?data=${this.state.isUserAuthenticated = true}`;
+                    if (tokens != null) {
+                        sessionStorage.setItem('token', tokens);
+                        window.location.href = `/MiddleWare?data=${this.state.isUserAuthenticated = true}`;
+                    }
+                    else {
+                        alert('Token not found');
+                    }
                 }
             }, (error) => {
                 alert(error);
@@ -54,7 +62,7 @@ export class Login extends Component {
                                 <div className="card-body p-5 text-center">
                                     <h2 className="mb-5" style={{ color: '#105CAD' }}>OTIS</h2>
                                     <div className="form-outline mb-4">
-                                        <label className="form-label text-start" style={{ textAlign: 'left' }} for="typeEmailX-2">Email</label>
+                                        <label className="form-label text-start" style={{ textAlign: 'left' }} for="typeEmailX-2">Username</label>
                                         <input type="email" onChange={this.changeUserName} id="typeEmailX-2" placeholder="Please enter your user name" className="form-control form-control-lg" />
                                     </div>
                                     <div className="form-outline mb-4">

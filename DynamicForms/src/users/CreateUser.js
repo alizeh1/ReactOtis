@@ -166,6 +166,36 @@ export class CreateUser extends Component {
                                 <span className="invalid-feedback">{isError.FirstName}</span>
                             )}
                         </div>
+
+                        <div className="form-group">
+                            <span className="input-group-text">Email Id</span>
+                            <input
+                                type="email"
+                                className={isError.Email.length > 0 ? 'is-invalid form-control' : 'form-control'}
+                                name="Email"
+                                onChange={this.formValChange}
+                            />
+                            {isError.Email.length > 0 && (
+                                <span className="invalid-feedback">{isError.Email}</span>
+                            )}
+                        </div>
+
+                        <div className="form-group">
+                            <span className="input-group-text">Username</span>
+                            <input
+                                type="text"
+                                className={
+                                    isError.UserName.length > 0 ? 'is-invalid form-control' : 'form-control'
+                                }
+                                name="UserName"
+                                onChange={this.formValChange}
+                            />
+                            {isError.UserName.length > 0 && (
+                                <span className="invalid-feedback">{isError.UserName}</span>
+                            )}
+                        </div>
+                    </div>
+                    <div className="col-md-6">
                         <div className="form-group">
                             <span className="input-group-text">Last Name</span>
                             <input
@@ -182,31 +212,17 @@ export class CreateUser extends Component {
                         </div>
 
                         <div className="form-group">
-                            <span className="input-group-text">User Name</span>
+                            <span className="input-group-text">Contact No</span>
                             <input
-                                type="text"
+                                type="number"
                                 className={
-                                    isError.UserName.length > 0 ? 'is-invalid form-control' : 'form-control'
+                                    isError.PhoneNumber.length > 0 ? 'is-invalid form-control' : 'form-control'
                                 }
-                                name="UserName"
+                                name="PhoneNumber"
                                 onChange={this.formValChange}
                             />
-                            {isError.UserName.length > 0 && (
-                                <span className="invalid-feedback">{isError.UserName}</span>
-                            )}
-                        </div>
-                    </div>
-                    <div className="col-md-6">
-                        <div className="form-group">
-                            <span className="input-group-text">Email</span>
-                            <input
-                                type="email"
-                                className={isError.Email.length > 0 ? 'is-invalid form-control' : 'form-control'}
-                                name="Email"
-                                onChange={this.formValChange}
-                            />
-                            {isError.Email.length > 0 && (
-                                <span className="invalid-feedback">{isError.Email}</span>
+                            {isError.PhoneNumber.length > 0 && (
+                                <span className="invalid-feedback">{isError.PhoneNumber}</span>
                             )}
                         </div>
 
@@ -225,20 +241,6 @@ export class CreateUser extends Component {
                             )}
                         </div>
 
-                        <div className="form-group">
-                            <span className="input-group-text">Phone Number</span>
-                            <input
-                                type="number"
-                                className={
-                                    isError.PhoneNumber.length > 0 ? 'is-invalid form-control' : 'form-control'
-                                }
-                                name="PhoneNumber"
-                                onChange={this.formValChange}
-                            />
-                            {isError.PhoneNumber.length > 0 && (
-                                <span className="invalid-feedback">{isError.PhoneNumber}</span>
-                            )}
-                        </div>
                     </div>
                 </div>
                 <div className="row">

@@ -47,7 +47,7 @@ export class Sidebar extends Component {
                             padding: '20px 5px',
                         }}
                     >
-                        Sidebar Footer
+{/*                        Sidebar Footer*/}
                     </div>
                 </CDBSidebarFooter>
             </CDBSidebar>

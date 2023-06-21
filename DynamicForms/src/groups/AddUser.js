@@ -183,9 +183,7 @@ export class AddUser extends Component {
                         {Users.map(dep =>
                             <tr key={dep.id}>
                                 {/* <td>{dep.userId}</td>*/}
-
                                 <td>{dep.name}</td>
-
                                 <td>{dep.email}</td>
                                 <td>{dep.phoneNumber}</td>
                                 <td>

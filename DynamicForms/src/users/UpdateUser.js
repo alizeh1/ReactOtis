@@ -209,19 +209,18 @@ export class UpdateUser extends Component {
                                 <span className="invalid-feedback">{isError.firstName}</span>
                             )}
                         </div>
+
                         <div className="form-group">
-                            <span className="input-group-text">Last Name</span>
+                            <span className="input-group-text">Email</span>
                             <input
-                                type="text"
-                                value={lastName}
-                                className={
-                                    isError.lastName.length > 0 ? 'is-invalid form-control' : 'form-control'
-                                }
-                                name="lastName"
+                                type="email"
+                                value={email}
+                                className={isError.email.length > 0 ? 'is-invalid form-control' : 'form-control'}
+                                name="email"
                                 onChange={this.formValChange}
                             />
-                            {isError.lastName.length > 0 && (
-                                <span className="invalid-feedback">{isError.lastName}</span>
+                            {isError.email.length > 0 && (
+                                <span className="invalid-feedback">{isError.email}</span>
                             )}
                         </div>
 
@@ -242,17 +241,21 @@ export class UpdateUser extends Component {
                         </div>
                     </div>
                     <div className="col-md-6">
+
+
                         <div className="form-group">
-                            <span className="input-group-text">Email</span>
+                            <span className="input-group-text">Last Name</span>
                             <input
-                                type="email"
-                                value={email}
-                                className={isError.email.length > 0 ? 'is-invalid form-control' : 'form-control'}
-                                name="email"
+                                type="text"
+                                value={lastName}
+                                className={
+                                    isError.lastName.length > 0 ? 'is-invalid form-control' : 'form-control'
+                                }
+                                name="lastName"
                                 onChange={this.formValChange}
                             />
-                            {isError.email.length > 0 && (
-                                <span className="invalid-feedback">{isError.email}</span>
+                            {isError.lastName.length > 0 && (
+                                <span className="invalid-feedback">{isError.lastName}</span>
                             )}
                         </div>
 

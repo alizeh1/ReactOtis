@@ -4,7 +4,7 @@ export class Users extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            Users: [],
+            users: [],
             id: 0,
             firstName: "",
             lastName: "",
@@ -19,21 +19,21 @@ export class Users extends Component {
         const response = fetch('https://localhost:7168/api/Users/GetAllUsers')
             .then(response => response.json())
             .then(data => {
-                this.setState({ Users: data });
+                this.setState({ users: data });
             });
     }
     componentDidMount() {
         this.refreshList();
     }
-    editClick(dep) {
+    editClick(user) {
         this.setState({
             modalTitle: "Edit User",
-            id: dep.id,
-            firstName: dep.firstName,
-            lastName: dep.lastName,
-            userName: dep.userName,
-            email: dep.email,
-            phoneNumber: dep.phoneNumber
+            id: user.id,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            userName: user.userName,
+            email: user.email,
+            phoneNumber: user.phoneNumber
         });
     }
     changefirstName = (e) => {
@@ -100,7 +100,7 @@ export class Users extends Component {
     }
     render() {
         const {
-            Users,
+            users,
             modalTitle,
             id,
             firstName,
@@ -125,26 +125,26 @@ export class Users extends Component {
                                 Name
                             </th>
                             <th>
-                                User Name
+                                Username
                             </th>
                             <th>
                                 Email
                             </th>
                             <th>
-                                PhoneNumber
+                                Contact No
                             </th>
                             <th>
-                                Action
+                                Actions
                             </th>
                         </tr>
                     </thead>
                     <tbody>
-                        {Users.map(dep =>
-                            <tr key={dep.id}>
-                                <td>{dep.firstName}&nbsp;{dep.lastName}</td>
-                                <td>{dep.userName}</td>
-                                <td>{dep.email}</td>
-                                <td>{dep.phoneNumber}</td>
+                        {users.map(user =>
+                            <tr key={user.id}>
+                                <td>{user.firstName}&nbsp;{user.lastName}</td>
+                                <td>{user.userName}</td>
+                                <td>{user.email}</td>
+                                <td>{user.phoneNumber}</td>
                                 <td>
                                     {/*<button type="button" name="editButton"*/}
                                     {/*    className="btn btn-light mr-1"*/}
@@ -156,7 +156,7 @@ export class Users extends Component {
                                     {/*        <path fillRule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z" />*/}
                                     {/*    </svg>*/}
                                     {/*</button>*/}
-                                    <Link exact to={`/UpdateUser/${dep.id}`}>
+                                    <Link exact to={`/UpdateUser/${user.id}`}>
                                         <button type="button" name="editButton"
                                             className="btn btn-light mr-1"
                                         >
@@ -168,7 +168,7 @@ export class Users extends Component {
                                     </Link>
                                     <button type="button" name="deleteButton"
                                         className="btn btn-light mr-1"
-                                        onClick={() => this.deleteClick(dep.id)}>
+                                        onClick={() => this.deleteClick(user.id)}>
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-trash-fill" viewBox="0 0 16 16">
                                             <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z" />
                                         </svg>
